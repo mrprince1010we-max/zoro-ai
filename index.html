@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZORO AI - ULTIMATE EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f3ff;
+            --secondary: #ff0055;
+            --purple-glow: #bd00ff;
+            --bg-dark: #030611;
+            --glass: rgba(10, 18, 38, 0.85);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                radial-gradient(circle at 50% 30%, rgba(0, 243, 255, 0.2), transparent 65%);
+            background-size: 30px 30px, 30px 30px, 100% 100%;
+            color: #ffffff;
+            font-family: 'Noto Kufi Arabic', 'Orbitron', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            padding: 20px 20px 15px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Top Bar Wrapper */
+        .top-bar {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 5px;
+        }
+
+        /* Redesigned Futuristic Title */
+        .header-title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .header-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: 5px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--primary) 50%, #bd00ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 18px rgba(0, 243, 255, 0.7));
+            text-shadow: 0 0 30px rgba(189, 0, 255, 0.5);
+        }
+
+        /* Redesigned Subtitle Badge */
+        .subtitle-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 6px;
+            padding: 4px 10px;
+            background: rgba(0, 243, 255, 0.08);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Settings Gear Button */
+        .settings-btn {
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--primary);
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            transition: 0.2s ease;
+        }
+
+        .settings-btn:active {
+            transform: scale(0.9);
+            background: var(--primary);
+        }
+
+        .settings-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
+            pointer-events: none;
+        }
+
+        /* Core Orb Container */
+        .core-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .ring-outer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 243, 255, 0.4);
+            animation: rotate 10s linear infinite;
+        }
+
+        .ring-inner {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            border-top-color: transparent;
+            animation: rotate-reverse 6s linear infinite;
+        }
+
+        .ai-orb {
+            position: relative;
+            width: 115px;
+            height: 115px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary) 0%, rgba(0, 243, 255, 0.2) 60%, transparent 100%);
+            box-shadow: 0 0 40px var(--primary), inset 0 0 20px #ffffff;
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+            touch-action: none;
+        }
+
+        .core-container.active .ai-orb {
+            background: radial-gradient(circle, var(--secondary) 0%, rgba(255, 0, 85, 0.3) 60%, transparent 100%);
+            box-shadow: 0 0 60px var(--secondary), inset 0 0 30px #ffffff;
+            transform: scale(0.92);
+        }
+
+        /* Control Area */
+        .controls-area {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .stop-btn {
+            background: rgba(255, 0, 85, 0.15);
+            border: 1px solid var(--secondary);
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+            transition: 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stop-btn:active {
+            transform: scale(0.92);
+            background: var(--secondary);
+        }
+
+        .stop-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: #ffffff;
+            pointer-events: none;
+        }
+
+        /* Card */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 243, 255, 0.1);
+            text-align: right;
+            direction: rtl;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            background: rgba(0, 243, 255, 0.12);
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            font-size: 11px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .user-text {
+            color: #a0aec0;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            border-right: 3px solid var(--secondary);
+            padding-right: 10px;
+        }
+
+        .zoro-response {
+            color: #ffffff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.5;
+            text-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
+        }
+
+        /* Settings Modal Panel */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(3, 6, 17, 0.9);
+            backdrop-filter: blur(15px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+
+        .modal-overlay.open {
+            display: flex !important;
+        }
+
+        .modal-card {
+            background: var(--glass);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 360px;
+            padding: 22px;
+            direction: rtl;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .close-btn {
+            background: rgba(255, 0, 85, 0.2);
+            border: 1px solid var(--secondary);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .setting-item select {
+            background: rgba(0, 243, 255, 0.15);
+            border: 1px solid var(--primary);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .footer-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+
+        .footer-tag span { color: var(--primary); text-shadow: 0 0 8px var(--primary); }
+
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes rotate-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(-360deg); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="header-title-container">
+            <div class="header-title">ZORO AI</div>
+            <div class="subtitle-badge">PUSH-TO-TALK SYSTEM</div>
+        </div>
+        <button class="settings-btn" id="btnSettings">
+            <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+        </button>
+    </div>
+
+    <div class="core-container" id="coreContainer">
+        <div class="ring-outer"></div>
+        <div class="ring-inner"></div>
+        <div class="ai-orb" id="micBtn"></div>
+    </div>
+
+    <div class="controls-area">
+        <button class="stop-btn" id="btnStop">
+            <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+            ڕاگرتنی شیکارکردن
+        </button>
+    </div>
+
+    <div class="card">
+        <div id="statusBadge" class="status-badge">سیستەم: ئامادەیە</div>
+        <div id="userText" class="user-text">دەست لەسەر ئۆربەکە ڕابگرە...</div>
+        <div id="zoroText" class="zoro-response">سڵاو سەرۆک! زۆرۆ ئامادەیە.</div>
+    </div>
+
+    <div class="modal-overlay" id="settingsPanel">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>ڕێکخستنەکان</div>
+                <button class="close-btn" id="btnCloseSettings">داخستن</button>
+            </div>
+            <div class="setting-item">
+                <span>خێرایی دەنگ:</span>
+                <select id="voiceSpeed">
+                    <option value="0.8">هێواش</option>
+                    <option value="1" selected>ئاسایی</option>
+                    <option value="1.2">خێرا</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-tag">DEVELOPMENT: <span>ZHIW4R</span></div>
+
+    <script>
+        const micBtn = document.getElementById('micBtn');
+        const container = document.getElementById('coreContainer');
+        const statusBadge = document.getElementById('statusBadge');
+
+        const btnSettings = document.getElementById('btnSettings');
+        const btnCloseSettings = document.getElementById('btnCloseSettings');
+        const settingsPanel = document.getElementById('settingsPanel');
+        const btnStop = document.getElementById('btnStop');
+
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        if (SpeechRec) {
+            recognition = new SpeechRec();
+            recognition.lang = 'ckb-IQ';
+            recognition.continuous = true;
+        }
+
+        let isListening = false;
+        let currentAudio = null;
+
+        btnSettings.addEventListener('click', function(e) {
+            e.stopPropagation();
+            settingsPanel.classList.add('open');
+        });
+
+        btnCloseSettings.addEventListener('click', function(e) {
+            e.stopPropagation();
+            settingsPanel.classList.remove('open');
+        });
+
+        btnStop.addEventListener('click', function(e) {
+            e.stopPropagation();
+            stopAllSpeech();
+        });
+
+        function stopAllSpeech() {
+            if (recognition) {
+                try { recognition.abort(); } catch(e){}
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            statusBadge.innerText = "سیستەم: وەستێنرا";
+            statusBadge.style.borderColor = "var(--secondary)";
+            statusBadge.style.color = "var(--secondary)";
+        }
+
+        function handleStart(e) {
+            e.preventDefault();
+            if (isListening) return;
+
+            stopAllSpeech();
+            isListening = true;
+            container.classList.add('active');
+            statusBadge.innerText = "سیستەم: گوێگرتن...";
+            statusBadge.style.borderColor = "var(--secondary)";
+            statusBadge.style.color = "var(--secondary)";
+
+            if (recognition) {
+                try { recognition.start(); } catch (err) {}
+            }
+        }
+
+        function handleEnd(e) {
+            e.preventDefault();
+            if (!isListening) return;
+
+            isListening = false;
+            container.classList.remove('active');
+            statusBadge.innerText = "سیستەم: شیکارکردن...";
+            statusBadge.style.borderColor = "var(--primary)";
+            statusBadge.style.color = "var(--primary)";
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.resume();
+            }
+
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+
+        micBtn.addEventListener('pointerdown', handleStart);
+        window.addEventListener('pointerup', handleEnd);
+
+        if (recognition) {
+            recognition.onresult = function(event) {
+                let text = "";
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    text += event.results[i][0].transcript;
+                }
+                document.getElementById('userText').innerText = "تۆ: " + text;
+                executeZoro(text);
+            };
+        }
+
+        function executeZoro(command) {
+            let reply = "بەڵێ سەرۆک، گوێم لێتە و لێرەم بۆ خزمەتت.";
+
+            if (command.includes("سڵاو") || command.includes("چۆنیت")) {
+                reply = "سڵاو سەرۆک! زۆرۆ لە خزمەتدایە، فەرمان بکە.";
+            } else if (command.includes("کێیت")) {
+                reply = "من زۆرۆم، سیستەمی ژیری دەستکردی تایبەتی ژیواری سەرۆک.";
+            } else if (command.includes("یوتیوب")) {
+                reply = "کرانەوەی هێڵی یوتیوب...";
+                setTimeout(() => window.location.href = "https://youtube.com", 1500);
+            } else {
+                reply = "سەرۆک، فەرمانت چییە؟ پێم بڵێ تا جێبەجێی بکەم.";
+            }
+
+            document.getElementById('zoroText').innerText = reply;
+            statusBadge.innerText = "سیستەم: ئامادەیە";
+            statusBadge.style.borderColor = "var(--primary)";
+            statusBadge.style.color = "var(--primary)";
+            speakOut(reply);
+        }
+
+        function speakOut(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const speed = document.getElementById('voiceSpeed').value || 1;
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ku-IQ';
+                utterance.rate = parseFloat(speed);
+                window.speechSynthesis.speak(utterance);
+            }
+
+            const encodedText = encodeURIComponent(text);
+            const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=ku&client=tw-ob`;
+            currentAudio = new Audio(audioUrl);
+            currentAudio.play().catch(err => console.log("Audio issue:", err));
+        }
+    </script>
+</body>
+</html>
