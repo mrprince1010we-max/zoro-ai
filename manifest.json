@@ -1,0 +1,11 @@
+{
+  "background_color": "#34a8b8",
+  "dir": "ltr",
+  "display": "fullscreen",
+  "name": "Talk With Zoro",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "Talk With Zoro",
+  "start_url": "/",
+  "theme_color": "#6d3ab8"
+}
