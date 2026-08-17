@@ -1,0 +1,13 @@
+{
+  "background_color": "rgb(117, 221, 229)",
+  "dir": "ltr",
+  "display": "fullscreen",
+  "name": "Talk With Zoro",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "Talk With Zoro",
+  "start_url": "/zoro-ai/",
+  "theme_color": "#b14cf4",
+  "id": "Zoro speaking",
+  "description": "Speaking with zoro"
+}
